@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Regulars — The 2AM Café</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink:   #0e0b08;
+      --paper: #f5efe6;
+      --cream: #e8ddd0;
+      --gold:  #b8935a;
+      --dim:   #6b5c4e;
+    }
+
+    body {
+      background-color: var(--ink);
+      color: var(--paper);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("images/noise.png");
+      background-repeat: repeat;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.06;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 5rem;
+      background: linear-gradient(to bottom, rgba(14,11,8,0.97) 60%, transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    nav ul { list-style: none; display: flex; gap: 2.5rem; }
+
+    nav ul a {
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      color: var(--cream);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.65;
+      transition: opacity 0.3s, color 0.3s, letter-spacing 0.3s;
+    }
+
+    nav ul a:hover { opacity: 1; color: var(--gold); letter-spacing: 0.2em; }
+    nav ul a.active { opacity: 1; color: var(--gold); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      
+  padding: 7rem 5rem 1rem;
+      max-width: 960px;
+      border-bottom: 1px solid rgba(184,147,90,0.1);
+    }
+
+    .page-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.55em;
+      color: var(--gold);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+    }
+
+    .page-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: var(--paper);
+    }
+
+    .page-intro {
+      font-style: italic;
+      color: var(--dim);
+      font-size: 1.1rem;
+      max-width: 480px;
+      line-height: 1.9;
+    }
+
+    /* ── REGULARS GRID ── */
+    .regulars-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 1060px;
+      margin: 0;
+    }
+
+    .regular-card {
+      padding: 4.5rem 5rem;
+      border-right: 1px solid rgba(184,147,90,0.08);
+      border-bottom: 1px solid rgba(184,147,90,0.08);
+      position: relative;
+      transition: background 0.4s;
+    }
+
+    .regular-card:nth-child(even) { border-right: none; }
+    .regular-card:hover { background: rgba(184,147,90,0.02); }
+
+    /* subtle number in corner */
+    .regular-card::after {
+      content: attr(data-seat);
+      position: absolute;
+      top: 2rem;
+      right: 2.5rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.5rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      opacity: 0.2;
+      text-transform: uppercase;
+    }
+
+    .regular-table {
+      font-family: 'Cinzel', serif;
+      font-size: 0.52rem;
+      letter-spacing: 0.45em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      opacity: 0.5;
+    }
+
+    .regular-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: var(--paper);
+      margin-bottom: 0.2rem;
+      letter-spacing: 0.03em;
+    }
+
+    .regular-alias {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 0.95rem;
+      margin-bottom: 2.2rem;
+      display: block;
+      opacity: 0.8;
+    }
+
+    .regular-details { margin-bottom: 2rem; }
+
+    .detail-row {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 0.5rem;
+      align-items: baseline;
+    }
+
+    .detail-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.5rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0.55;
+      min-width: 76px;
+    }
+
+    .detail-value {
+      font-style: italic;
+      color: var(--dim);
+      font-size: 0.95rem;
+    }
+
+    .regular-bio {
+      font-style: italic;
+      color: var(--cream);
+      font-size: 1rem;
+      line-height: 1.85;
+      border-top: 1px solid rgba(184,147,90,0.1);
+      padding-top: 1.5rem;
+      opacity: 0.82;
+    }
+
+    /* ── LORE REVEAL (pure HTML <details>) ── */
+    .lore-reveal {
+      margin-top: 1.2rem;
+    }
+
+    .lore-reveal summary {
+      font-family: 'Cinzel', serif;
+      font-size: 0.5rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0.5;
+      list-style: none;
+      transition: opacity 0.3s;
+    }
+
+    .lore-reveal summary::-webkit-details-marker { display: none; }
+    .lore-reveal summary::before { content: '+ '; }
+    .lore-reveal[open] summary::before { content: '— '; }
+    .lore-reveal summary:hover { opacity: 1; }
+
+    .lore-reveal p {
+      margin-top: 1rem;
+      font-style: italic;
+      color: var(--dim);
+      font-size: 0.9rem;
+      line-height: 1.8;
+      border-left: 1px solid rgba(184,147,90,0.2);
+      padding-left: 1rem;
+    }
+
+    /* ── MYSTERY CARD (Table Four) ── */
+    .mystery-card {
+      grid-column: span 2;
+      padding: 5rem;
+      border-bottom: 1px solid rgba(184,147,90,0.08);
+      display: flex;
+      align-items: center;
+      gap: 6rem;
+    }
+
+    .mystery-left {
+      min-width: 200px;
+    }
+
+    .mystery-card .regular-name {
+      font-size: 1.1rem;
+      opacity: 0.3;
+      letter-spacing: 0.15em;
+    }
+
+    .mystery-divider {
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, rgba(184,147,90,0.3), transparent);
+      flex-shrink: 0;
+    }
+
+    .mystery-card .regular-bio {
+      border-top: none;
+      padding-top: 0;
+      max-width: 460px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(184,147,90,0.15);
+      padding: 3rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.4em; color: var(--gold); }
+    .footer-note { font-style: italic; color: var(--dim); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">The 2AM Café</a>
+    <ul>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="regulars.html" class="active">Regulars</a></li>
+      <li><a href="tonight.html">Tonight</a></li>
+      <li><a href="find.html">Find Us</a></li>
+    </ul>
+  </nav>
+
+  <header class="page-header">
+    <span class="page-eyebrow">They were here before you</span>
+    <h1 class="page-title">The Regulars</h1>
+    <p class="page-intro">We don't ask names. They gave them anyway. Some of these may be accurate.</p>
+  </header>
+
+  <div class="regulars-grid">
+
+    <!-- Margaret -->
+    <div class="regular-card" data-seat="Table Two">
+      <p class="regular-table">Table Two</p>
+      <h2 class="regular-name">Margaret</h2>
+      <span class="regular-alias">"The Archivist"</span>
+      <div class="regular-details">
+        <div class="detail-row">
+          <span class="detail-label">Arrives</span>
+          <span class="detail-value">12:47am, exactly</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Orders</span>
+          <span class="detail-value">The Chamomile, never the coffee</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Seen with</span>
+          <span class="detail-value">Notebooks. Many. Always a different one.</span>
+        </div>
+      </div>
+      <p class="regular-bio">She writes for three hours without looking up. Once, someone asked what she was writing. She smiled and turned the notebook around. It was blank. She's been coming back for six years.</p>
+      <details class="lore-reveal">
+        <summary>More</summary>
+        <p>She has never ordered the biscuit, though it always comes. She leaves it on the table untouched. We've stopped taking it away. It feels like it belongs to her now, even if she doesn't want it.</p>
+      </details>
+    </div>
+
+    <!-- The Professor -->
+    <div class="regular-card" data-seat="Table Seven">
+      <p class="regular-table">Table Seven</p>
+      <h2 class="regular-name">The Professor</h2>
+      <span class="regular-alias">"We don't know his real name"</span>
+      <div class="regular-details">
+        <div class="detail-row">
+          <span class="detail-label">Arrives</span>
+          <span class="detail-value">After the rain starts</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Orders</span>
+          <span class="detail-value">The Black, twice, an hour apart</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Seen with</span>
+          <span class="detail-value">A newspaper, three weeks old</span>
+        </div>
+      </div>
+      <p class="regular-bio">He argues with the newspaper under his breath. He has been known to fold it triumphantly, as if he has won. He tips generously and once left a note that said only: "you were right about the fog."</p>
+      <details class="lore-reveal">
+        <summary>More</summary>
+        <p>We have never seen him arrive. He is simply there when the rain begins, as if he and the weather have an arrangement we were not invited to understand.</p>
+      </details>
+    </div>
+
+    <!-- Lena -->
+    <div class="regular-card" data-seat="Counter Seat Three">
+      <p class="regular-table">Counter Seat Three</p>
+      <h2 class="regular-name">Lena</h2>
+      <span class="regular-alias">"The One Who Always Leaves at 4"</span>
+      <div class="regular-details">
+        <div class="detail-row">
+          <span class="detail-label">Arrives</span>
+          <span class="detail-value">1:30am on Thursdays only</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Orders</span>
+          <span class="detail-value">Something Warm (lets us decide)</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Seen with</span>
+          <span class="detail-value">Headphones. Never plays anything.</span>
+        </div>
+      </div>
+      <p class="regular-bio">She sits at the counter and watches the street. Nobody sits next to her, not because she's unfriendly — she's said hello every time — but because something about her suggests she is waiting for a specific person. They haven't come yet.</p>
+      <details class="lore-reveal">
+        <summary>More</summary>
+        <p>She once asked us to hold a letter for her. We put it behind the bar. That was eight months ago. She hasn't asked for it back. We haven't opened it.</p>
+      </details>
+    </div>
+
+    <!-- The Armchair -->
+    <div class="regular-card" data-seat="The Armchair">
+      <p class="regular-table">The Armchair by the Window</p>
+      <h2 class="regular-name">Whoever Needs It</h2>
+      <span class="regular-alias">"First Come"</span>
+      <div class="regular-details">
+        <div class="detail-row">
+          <span class="detail-label">Arrives</span>
+          <span class="detail-value">Varies</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Orders</span>
+          <span class="detail-value">Anything hot</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Seen with</span>
+          <span class="detail-value">A look that says: I just needed to sit down</span>
+        </div>
+      </div>
+      <p class="regular-bio">The armchair by the window has been occupied by hundreds of people who all had the same expression. We don't remember their faces. We remember that they always looked better by the time they left.</p>
+      <details class="lore-reveal">
+        <summary>More</summary>
+        <p>The cushion has a small burn mark from a candle that fell in 2019. We've never had it fixed. It feels important to keep it exactly as it is. Some things should show their history.</p>
+      </details>
+    </div>
+
+    <!-- Table Four — Mystery -->
+    <div class="mystery-card">
+      <div class="mystery-left">
+        <p class="regular-table">Table Four</p>
+        <h2 class="regular-name">&#8212;&#8212;&#8212;&#8212;</h2>
+      </div>
+      <div class="mystery-divider"></div>
+      <p class="regular-bio">Table four is always set. The cup is clean. The chair is pulled out slightly, as if someone just stood up. Nobody sits there. Nobody has ever sat there, as far as anyone can remember. We stopped asking. We still set it every night.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <span class="footer-logo">The 2AM Café</span>
+    <span class="footer-note">no wifi. no loud music. no closing time.</span>
+  </footer>
+
+</body>
+</html>

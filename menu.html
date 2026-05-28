@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menu — The 2AM Café</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink:   #0e0b08;
+      --paper: #f5efe6;
+      --cream: #e8ddd0;
+      --gold:  #b8935a;
+      --dim:   #6b5c4e;
+    }
+
+    body {
+      background-color: var(--ink);
+      color: var(--paper);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("images/noise.png");
+      background-repeat: repeat;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.06;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 5rem;
+      background: linear-gradient(to bottom, rgba(14,11,8,0.97) 60%, transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    nav ul { list-style: none; display: flex; gap: 2.5rem; }
+
+    nav ul a {
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      color: var(--cream);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.65;
+      transition: opacity 0.3s, color 0.3s, letter-spacing 0.3s;
+    }
+
+    nav ul a:hover { opacity: 1; color: var(--gold); letter-spacing: 0.2em; }
+    nav ul a.active { opacity: 1; color: var(--gold); }
+
+    /* ── PAGE HEADER ── */
+     .page-header {
+    padding: 8rem 5rem 2rem;
+      max-width: 960px;
+      border-bottom: 1px solid rgba(184,147,90,0.1);
+    }
+
+    .page-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.55em;
+      color: var(--gold);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.8rem;
+      opacity: 0.8;
+    }
+
+    .page-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      font-weight: 600;
+      line-height: 1.05;
+      color: var(--paper);
+      margin-bottom: 0.8rem;
+    }
+
+    .page-intro {
+      font-style: italic;
+      color: var(--dim);
+      font-size: 1.1rem;
+      max-width: 480px;
+      line-height: 1.9;
+    }
+
+    /* ── MENU SECTION ── */
+    .menu-section {
+      padding: 2rem 5rem;
+      border-bottom: 1px solid rgba(184,147,90,0.1);
+      max-width: 960px;
+    }
+
+    .menu-section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.55em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .menu-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(184,147,90,0.15);
+    }
+
+    /* ── MENU ITEM ── */
+    .menu-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      padding: 2.2rem 0;
+      border-bottom: 1px solid rgba(184,147,90,0.07);
+      align-items: start;
+      transition: padding-left 0.3s;
+    }
+
+    .menu-item:hover { padding-left: 0.6rem; }
+    .menu-item:last-child { border-bottom: none; }
+
+    .item-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--paper);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .item-desc {
+      font-style: italic;
+      color: var(--dim);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      max-width: 540px;
+    }
+
+    .item-note {
+      font-family: 'Cinzel', serif;
+      font-size: 0.52rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0.55;
+      white-space: nowrap;
+      padding-top: 0.3rem;
+      border: 1px solid rgba(184,147,90,0.2);
+      padding: 0.3rem 0.7rem;
+      align-self: start;
+    }
+
+    /* ── WARNING BOX ── */
+    .menu-warning {
+      margin: 3rem 5rem 5rem;
+      padding: 2rem 2.5rem;
+      border: 1px solid rgba(184,147,90,0.2);
+      max-width: 520px;
+      position: relative;
+    }
+
+    .menu-warning::before {
+      content: '!';
+      position: absolute;
+      top: -0.8rem;
+      left: 2rem;
+      background: var(--ink);
+      padding: 0 0.5rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+    }
+
+    .menu-warning strong {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.45em;
+      color: var(--gold);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.8rem;
+      font-style: normal;
+    }
+
+    .menu-warning p {
+      font-style: italic;
+      color: var(--dim);
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(184,147,90,0.15);
+      padding: 3rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.4em; color: var(--gold); }
+    .footer-note { font-style: italic; color: var(--dim); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">The 2AM Café</a>
+    <ul>
+      <li><a href="menu.html" class="active">Menu</a></li>
+      <li><a href="regulars.html">Regulars</a></li>
+      <li><a href="tonight.html">Tonight</a></li>
+      <li><a href="find.html">Find Us</a></li>
+    </ul>
+  </nav>
+
+  <header class="page-header">
+    <span class="page-eyebrow">What we serve</span>
+    <h1 class="page-title">The Menu</h1>
+    <p class="page-intro">We don't list prices. If you're asking, you probably don't need to be here yet.</p>
+  </header>
+  </header>
+
+<div style="padding: 1.5rem 5rem 1.5rem; text-align:center;">
+  <img 
+    src="images/menu.png" 
+    style="
+      width:70%;
+      filter: brightness(60%);
+      border: 1px solid rgba(184,147,90,0.15);
+    "
+  >
+</div>
+
+<!-- COFFEE -->
+<section class="menu-section">
+
+  <!-- COFFEE -->
+  <section class="menu-section">
+    <p class="menu-section-title">Coffee</p>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">The Black</h3>
+        <p class="item-desc">Espresso. Nothing else. Served without ceremony or explanation. If you need to ask what it tastes like, order something else.</p>
+      </div>
+      <span class="item-note">Signature</span>
+    </div>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">The Fog</h3>
+        <p class="item-desc">Espresso with steamed milk pulled so slow it arrives already cold on one side. Named by a regular who hasn't been back to explain.</p>
+      </div>
+      <span class="item-note">House</span>
+    </div>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">Something Warm</h3>
+        <p class="item-desc">We decide. You were going to sit here for two hours regardless. Trust us.</p>
+      </div>
+      <span class="item-note">Chef's Choice</span>
+    </div>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">The Last One</h3>
+        <p class="item-desc">A double. Reserved for the hour after 3am. We don't ask why. You don't explain. It comes with a glass of water no one asked for.</p>
+      </div>
+      <span class="item-note">After 3am Only</span>
+    </div>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">The Cold One</h3>
+        <p class="item-desc">Cold brew, steeped for eighteen hours, served over a single large cube of ice that takes forty minutes to melt. You will wait.</p>
+      </div>
+      <span class="item-note">Slow</span>
+    </div>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">The Quiet Cup</h3>
+        <p class="item-desc">A cortado, prepared in silence, delivered in silence. The barista will not make eye contact. This is intentional. It is the best thing we make.</p>
+      </div>
+      <span class="item-note">Secret</span>
+    </div>
+  </section>
+
+  <!-- NOT COFFEE -->
+  <section class="menu-section">
+    <p class="menu-section-title">Not Coffee</p>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">The Chamomile</h3>
+        <p class="item-desc">Tea for people who came to sleep but stayed to think. Served in a cup with a small chip on the rim. We consider it character.</p>
+      </div>
+      <span class="item-note">Gentle</span>
+    </div>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">Hot Water</h3>
+        <p class="item-desc">Just water. Hot. We don't judge. Sometimes that's all you need and we've been open long enough to know.</p>
+      </div>
+      <span class="item-note">Always</span>
+    </div>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">The Rain</h3>
+        <p class="item-desc">A cold glass of water, placed on the table when you arrive, whether you want it or not. It has been called the best thing on the menu. We didn't name it. Someone else did.</p>
+      </div>
+      <span class="item-note">Complimentary</span>
+    </div>
+  </section>
+
+  <!-- TO EAT -->
+  <section class="menu-section">
+    <p class="menu-section-title">To Eat</p>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">Toast</h3>
+        <p class="item-desc">Bread, toasted. Butter on the side. No options. Available until the bread runs out, which it hasn't in eleven years.</p>
+      </div>
+      <span class="item-note">Simple</span>
+    </div>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">The Biscuit</h3>
+        <p class="item-desc">Comes with every order whether you want it or not. Nobody has ever complained. One woman asked for three. We obliged in silence.</p>
+      </div>
+      <span class="item-note">Complimentary</span>
+    </div>
+
+    <div class="menu-item">
+      <div>
+        <h3 class="item-name">The Egg</h3>
+        <p class="item-desc">Soft boiled. Available only between 4am and 5am. We've never understood why people order it but we've never stopped making it.</p>
+      </div>
+      <span class="item-note">4am — 5am</span>
+    </div>
+  </section>
+
+  <div class="menu-warning">
+    <strong>A Note</strong>
+    <p>We do not have oat milk. We did once. Something happened. We don't discuss it. The chamomile is always available. The biscuit is always free.</p>
+  </div>
+
+  <footer>
+    <span class="footer-logo">The 2AM Café</span>
+    <span class="footer-note">no wifi. no loud music. no closing time.</span>
+  </footer>
+
+</body>
+</html>

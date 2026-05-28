@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tonight's Jazz — The 2AM Café</title>
+<link
+href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+--ink: #0e0b08;
+--paper: #f5efe6;
+--cream: #e8ddd0;
+--gold: #b8935a;
+--dim: #6b5c4e;
+}
+html { scroll-behavior: smooth; }
+body {
+background-color: var(--ink);
+color: var(--paper);
+font-family: 'Cormorant Garamond', serif;
+font-size: 18px;
+line-height: 1.8;
+overflow-x: hidden;
+}
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+pointer-events: none;
+z-index: 999;
+opacity: 0.4;
+}
+/* NAV */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 1.2rem 4rem;
+background: linear-gradient(to bottom, rgba(14,11,8,0.98), transparent);
+}
+.nav-logo {
+font-family: 'Cinzel', serif;
+font-size: 0.85rem;
+letter-spacing: 0.3em;
+color: var(--gold);
+text-decoration: none;
+text-transform: uppercase;
+}
+nav ul {
+list-style: none;
+display: flex;
+gap: 2.5rem;
+}
+nav ul a {
+font-family: 'Cormorant Garamond', serif;
+font-size: 0.9rem;
+letter-spacing: 0.15em;
+color: var(--cream);
+text-decoration: none;
+text-transform: uppercase;
+opacity: 0.7;
+transition: opacity 0.3s, color 0.3s;
+}
+nav ul a:hover, nav ul a.active { opacity: 1; color: var(--gold); }
+/* PAGE HEADER */
+.page-header {
+padding: 12rem 4rem 5rem;
+max-width: 900px;
+}
+.page-eyebrow {
+font-family: 'Cinzel', serif;
+font-size: 0.6rem;
+letter-spacing: 0.5em;
+color: var(--gold);
+text-transform: uppercase;
+display: block;
+margin-bottom: 1.5rem;
+}
+.page-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  font-weight: 600;
+  color: var(--paper);
+  margin-bottom: 0.8rem;
+}
+.page-intro {
+font-style: italic;
+color: var(--dim);
+font-size: 1.1rem;
+max-width: 500px;
+}
+/* BAND INTRO SECTION */
+.band-section {
+padding: 3rem 4rem;
+border-top: 1px solid rgba(184,147,90,0.15);
+max-width: 900px;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 4rem;
+align-items: start;
+}
+.band-name-display {
+font-family: 'Cinzel', serif;
+font-size: 0.55rem;
+letter-spacing: 0.4em;
+color: var(--gold);
+text-transform: uppercase;
+margin-bottom: 0.8rem;
+opacity: 0.6;
+}
+.band-name {
+font-family: 'IM Fell English', serif;
+font-style: italic;
+font-size: 2rem;
+color: var(--paper);
+line-height: 1.2;
+margin-bottom: 2rem;
+}
+.band-bio {
+font-style: italic;
+color: var(--dim);
+font-size: 1rem;
+line-height: 1.8;
+}
+/* SETLIST SECTION */
+.setlist-section {
+padding: 4rem;
+border-top: 1px solid rgba(184,147,90,0.15);
+max-width: 900px;
+}
+.setlist-header {
+font-family: 'Cinzel', serif;
+font-size: 0.6rem;
+letter-spacing: 0.5em;
+color: var(--gold);
+text-transform: uppercase;
+margin-bottom: 3rem;
+}
+.set-block {
+margin-bottom: 4rem;
+}
+.set-block:last-child {
+margin-bottom: 0;
+}
+.set-label {
+font-family: 'Cinzel', serif;
+font-size: 0.55rem;
+letter-spacing: 0.4em;
+color: var(--gold);
+text-transform: uppercase;
+opacity: 0.5;
+margin-bottom: 1.5rem;
+padding-bottom: 1rem;
+border-bottom: 1px solid rgba(184,147,90,0.1);
+}
+.setlist-item {
+display: grid;
+grid-template-columns: 30px 1fr auto;
+gap: 1.5rem;
+padding: 1rem 0;
+border-bottom: 1px solid rgba(184,147,90,0.05);
+align-items: baseline;
+}
+.setlist-item:last-child {
+border-bottom: none;
+}
+.set-num {
+font-family: 'Cinzel', serif;
+font-size: 0.55rem;
+color: var(--gold);
+opacity: 0.4;
+}
+.set-song {
+font-family: 'IM Fell English', serif;
+font-style: italic;
+font-size: 1.2rem;
+color: var(--cream);
+}
+.set-note {
+font-size: 0.85rem;
+color: var(--dim);
+font-style: italic;
+opacity: 0.7;
+}
+/* MEMBERS SECTION */
+.members-section {
+padding: 4rem;
+border-top: 1px solid rgba(184,147,90,0.15);
+max-width: 900px;
+}
+.members-section h3 {
+font-family: 'Cinzel', serif;
+font-size: 0.6rem;
+letter-spacing: 0.5em;
+color: var(--gold);
+text-transform: uppercase;
+margin-bottom: 2.5rem;
+}
+.member-row {
+display: grid;
+grid-template-columns: 120px 1fr auto;
+gap: 2rem;
+padding: 1rem 0;
+align-items: baseline;
+border-bottom: 1px solid rgba(184,147,90,0.05);
+}
+.member-row:last-child {
+border-bottom: none;
+}
+.member-instrument {
+font-family: 'Cinzel', serif;
+font-size: 0.6rem;
+letter-spacing: 0.3em;
+color: var(--gold);
+text-transform: uppercase;
+opacity: 0.6;
+}
+.member-name {
+font-style: italic;
+color: var(--cream);
+font-size: 1rem;
+}
+.member-note {
+color: var(--dim);
+font-style: italic;
+font-size: 0.85rem;
+}
+/* CLOSING NOTE */
+.closing {
+padding: 5rem 4rem;
+max-width: 700px;
+}
+.closing p {
+font-style: italic;
+color: var(--dim);
+font-size: 1.1rem;
+line-height: 1.9;
+}
+.closing p + p {
+margin-top: 1.5rem;
+}
+/* FOOTER */
+footer {
+border-top: 1px solid rgba(184,147,90,0.15);
+padding: 3rem 4rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 4rem;
+}
+.footer-logo {
+font-family: 'Cinzel', serif;
+font-size: 0.75rem;
+letter-spacing: 0.4em;
+color: var(--gold);
+}
+.footer-note {
+font-style: italic;
+color: var(--dim);
+font-size: 0.85rem;
+}
+/* RESPONSIVE */
+@media (max-width: 768px) {
+nav { padding: 1rem 2rem; }
+.band-section { grid-template-columns: 1fr; gap: 2rem; }
+.setlist-section, .members-section, .closing { padding: 3rem 2rem; }
+.member-row { grid-template-columns: 1fr; gap: 0.5rem; }
+}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="nav-logo">The 2AM Café</a>
+<ul>
+<li><a href="menu.html">Menu</a></li>
+<li><a href="regulars.html">Regulars</a></li>
+<li><a href="tonight.html" class="active">Tonight</a></li>
+<li><a href="find.html">Find Us</a></li>
+</ul>
+</nav>
+<header class="page-header">
+<span class="page-eyebrow">Live, every night, without exception</span>
+<h1 class="page-title">Tonight's Jazz</h1>
+<p class="page-intro">They play until someone cries. Then they play one more.</p>
+</header>
+<div style="padding: 1.5rem 5rem 2rem; text-align:center;">
+  <img 
+    src="images/jazz.png" 
+    style="
+      width:68%;
+      filter: brightness(55%);
+      border: 1px solid rgba(184,147,90,0.15);
+    "
+  >
+</div>
+<div>
+<p class="band-bio">They've been playing here since before anyone can remember. Elliot Vane may or may not be a real person. The trumpet player has never spoken. They don't have a manager. They don't have a website. They just show up. Every night. Without fail. The piano sounds like someone remembering something they tried to forget.</p>
+</div>
+</div>
+<section class="setlist-section">
+<p class="setlist-header">Tonight's Setlist</p>
+<div class="set-block">
+<p class="set-label">First Set — begins at midnight</p>
+<div class="setlist-item">
+<span class="set-num">01</span>
+<span class="set-song">In the Hours Before It Mattered</span>
+<span class="set-note">slow opener</span>
+</div>
+<div class="setlist-item">
+<span class="set-num">02</span>
+<span class="set-song">Fog on the Window Again</span>
+<span class="set-note">played in half-time</span>
+</div>
+<div class="setlist-item">
+<span class="set-num">03</span>
+<span class="set-song">She Left in March (Reprise)</span>
+<span class="set-note">they always play this one twice</span>
+</div>
+<div class="setlist-item">
+<span class="set-num">04</span>
+<span class="set-song">The Kind of Blue That Isn't Sadness</span>
+<span class="set-note">trumpet takes over here</span>
+</div>
+<div class="setlist-item">
+<span class="set-num">05</span>
+<span class="set-song">Something My Father Used to Hum</span>
+<span class="set-note">no one knows the title. we named it.</span>
+</div>
+</div>
+<div class="set-block">
+<p class="set-label">Second Set — begins at 2am</p>
+<div class="setlist-item">
+<span class="set-num">06</span>
+<span class="set-song">The Night Bus</span>
+<span class="set-note">tempo picks up here</span>
+</div>
+<div class="setlist-item">
+<span class="set-num">07</span>
+<span class="set-song">Nobody Dances Anymore (But We Do)</span>
+<span class="set-note">upbeat, unexpected</span>
+</div>
+<div class="setlist-item">
+<span class="set-num">08</span>
+<span class="set-song">Elliot's Unfinished One</span>
+<span class="set-note">ends differently every time</span>
+</div>
+<div class="setlist-item">
+<span class="set-num">09</span>
+<span class="set-song">Rain, Correctly</span>
+<span class="set-note">bass carries this one</span>
+</div>
+<div class="setlist-item">
+<span class="set-num">10</span>
+<span class="set-song">One More (the encore they never announce)</span>
+<span class="set-note">after someone cries</span>
+</div>
+</div>
+</section>
+<section class="members-section">
+<h3>The Band</h3>
+<div class="member-row">
+<span class="member-instrument">Piano</span>
+<span class="member-name">Elliot Vane</span>
+<span class="member-note">or someone using his name</span>
+</div>
+<div class="member-row">
+<span class="member-instrument">Trumpet</span>
+<span class="member-name">Unknown</span>
+<span class="member-note">has never spoken. plays like apologies sound.</span>
+</div>
+<div class="member-row">
+<span class="member-instrument">Double Bass</span>
+<span class="member-name">Mara</span>
+<span class="member-note">just Mara. been here the longest.</span>
+</div>
+<div class="member-row">
+<span class="member-instrument">Drums</span>
+<span class="member-name">The Young One</span>
+<span class="member-note">different person every few months. always fits perfectly.</span>
+</div>
+</section>
+<div class="closing">
+<p>They don't take requests. They don't take breaks longer than a cigarette. They don't explain what anything means. If you ask, Elliot will look at you for a long moment and then turn back to the piano. His fingers will find the keys like they've been waiting.</p>
+<p>That is, we think, the answer.</p>
+<p style="margin-top:2rem;">Come early. Sit by the window. Listen to the tuning. That's not the beginning of the song—it's already started. The song began when you decided to come here.</p>
+</div>
+<footer>
+<span class="footer-logo">The 2AM Café</span>
+<span class="footer-note">no wifi. no loud music. no closing time.</span>
+</footer>
+</body>
+</html>

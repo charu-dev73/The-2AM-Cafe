@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Find Us — The 2AM Café</title>
+<link
+href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+--ink: #0e0b08;
+--paper: #f5efe6;
+--cream: #e8ddd0;
+--gold: #b8935a;
+--dim: #6b5c4e;
+}
+html { scroll-behavior: smooth; }
+body {
+background-color: var(--ink);
+color: var(--paper);
+font-family: 'Cormorant Garamond', serif;
+font-size: 18px;
+line-height: 1.8;
+overflow-x: hidden;
+}
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+pointer-events: none;
+z-index: 999;
+opacity: 0.4;
+}
+/* NAV */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 1.2rem 4rem;
+background: linear-gradient(to bottom, rgba(14,11,8,0.98), transparent);
+}
+.nav-logo {
+font-family: 'Cinzel', serif;
+font-size: 0.85rem;
+letter-spacing: 0.3em;
+color: var(--gold);
+text-decoration: none;
+text-transform: uppercase;
+}
+nav ul {
+list-style: none;
+display: flex;
+gap: 2.5rem;
+}
+nav ul a {
+font-family: 'Cormorant Garamond', serif;
+font-size: 0.9rem;
+letter-spacing: 0.15em;
+color: var(--cream);
+text-decoration: none;
+text-transform: uppercase;
+opacity: 0.7;
+transition: opacity 0.3s, color 0.3s;
+}
+nav ul a:hover, nav ul a.active { opacity: 1; color: var(--gold); }
+/* PAGE HEADER */
+.page-header {
+padding: 7rem 5rem 1rem;
+max-width: 900px;
+}
+.page-eyebrow {
+font-family: 'Cinzel', serif;
+font-size: 0.6rem;
+letter-spacing: 0.5em;
+color: var(--gold);
+text-transform: uppercase;
+display: block;
+margin-bottom: 1.5rem;
+}
+.page-title {
+font-family: 'Cinzel', serif;
+font-size: clamp(2.2rem, 5vw, 4.2rem);
+font-weight: 600;
+line-height: 1.1;
+color: var(--paper);
+margin-bottom: 0.8rem;
+}
+.page-intro {
+font-style: italic;
+color: var(--dim);
+font-size: 1.1rem;
+max-width: 620px;
+}
+/* DIRECTIONS SECTION */
+.directions-section {
+padding: 4rem;
+border-top: 1px solid rgba(184,147,90,0.15);
+max-width: 800px;
+margin: 2rem 0;
+}
+.directions-prose {
+font-style: italic;
+color: var(--cream);
+font-size: 1.15rem;
+line-height: 2;
+margin-bottom: 3rem;
+}
+.directions-prose p + p {
+margin-top: 2rem;
+}
+.directions-prose strong {
+font-family: 'Cinzel', serif;
+font-style: normal;
+color: var(--gold);
+font-weight: normal;
+letter-spacing: 0.05em;
+}
+/* DETAILS GRID */
+.details-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 3rem;
+padding: 4rem;
+border-top: 1px solid rgba(184,147,90,0.15);
+max-width: 900px;
+margin: 2rem 0;
+}
+.detail-block {
+padding: 2rem;
+border: 1px solid rgba(184,147,90,0.08);
+transition: background 0.4s;
+}
+.detail-block:hover {
+background: rgba(184,147,90,0.02);
+}
+.detail-block h3 {
+font-family: 'Cinzel', serif;
+font-size: 0.6rem;
+letter-spacing: 0.5em;
+color: var(--gold);
+text-transform: uppercase;
+margin-bottom: 1.5rem;
+}
+.detail-block p {
+font-style: italic;
+color: var(--dim);
+font-size: 1rem;
+line-height: 1.8;
+margin-bottom: 1rem;
+}
+.detail-block p:last-child {
+margin-bottom: 0;
+}
+.detail-block span {
+font-family: 'Cinzel', serif;
+font-size: 0.55rem;
+letter-spacing: 0.3em;
+color: var(--gold);
+text-transform: uppercase;
+opacity: 0.6;
+display: block;
+margin-top: 1rem;
+padding-top: 1rem;
+border-top: 1px solid rgba(184,147,90,0.1);
+}
+/* PRACTICAL INFO */
+.practical-section {
+padding: 4rem;
+border-top: 1px solid rgba(184,147,90,0.15);
+max-width: 900px;
+margin: 2rem 0;
+}
+.practical-section h3 {
+font-family: 'Cinzel', serif;
+font-size: 0.6rem;
+letter-spacing: 0.5em;
+color: var(--gold);
+text-transform: uppercase;
+margin-bottom: 2rem;
+}
+.info-item {
+padding: 1.5rem 0;
+border-bottom: 1px solid rgba(184,147,90,0.07);
+}
+.info-item:last-child {
+border-bottom: none;
+}
+.info-label {
+font-family: 'Cinzel', serif;
+font-size: 0.55rem;
+letter-spacing: 0.3em;
+color: var(--gold);
+text-transform: uppercase;
+opacity: 0.6;
+display: block;
+margin-bottom: 0.5rem;
+}
+.info-value {
+font-style: italic;
+color: var(--cream);
+font-size: 1rem;
+}
+/* CLOSING */
+.closing-section {
+padding: 5rem 4rem;
+max-width: 700px;
+text-align: center;
+}
+.closing-section p {
+font-style: italic;
+color: var(--dim);
+font-size: 1.1rem;
+line-height: 1.9;
+}
+.closing-section p + p {
+margin-top: 1.5rem;
+}
+/* FOOTER */
+footer {
+border-top: 1px solid rgba(184,147,90,0.15);
+padding: 3rem 4rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 4rem;
+}
+.footer-logo {
+font-family: 'Cinzel', serif;
+font-size: 0.75rem;
+letter-spacing: 0.4em;
+color: var(--gold);
+}
+.footer-note {
+font-style: italic;
+color: var(--dim);
+font-size: 0.85rem;
+}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="nav-logo">The 2AM Café</a>
+<ul>
+<li><a href="menu.html">Menu</a></li>
+<li><a href="regulars.html">Regulars</a></li>
+<li><a href="tonight.html">Tonight</a></li>
+<li><a href="find.html" class="active">Find Us</a></li>
+</ul>
+</nav>
+<header class="page-header">
+<span class="page-eyebrow">How to arrive</span>
+<h1 class="page-title">Find Us</h1>
+<p class="page-intro">We're not on Google Maps. We've never been on Google Maps. We don't need to be.</p>
+</header>
+<section class="directions-section">
+<div class="directions-prose">
+<p>You begin at the corner where <strong>three streets have an argument about their names</strong>. If you're unsure which corner, you've walked past it. Go back. Turn left at the broken streetlight—the one that's been broken for seven years. We tried to fix it once. The light came back wrong. We left it.</p>
+<p>Walk for the amount of time it takes to forget why you started walking. You'll pass a <strong>bookstore that may or may not be open</strong>. There's no sign. There's never been a sign. If you can see in the window, the bookstore owner is having one of their better days.</p>
+<p>When you hear <strong>the sound of water</strong>—not a fountain, not a river, but the specific sound of someone pouring a kettle at 2 in the morning—you're close. Closer still when you smell coffee and the rain that hasn't fallen yet.</p>
+<p>There's a <strong>narrow door between a shuttered shop and a wall</strong>. The door is dark. The paint has been dark for so long it's forgotten other colors. Push it. It opens. Everything inside is warm.</p>
+</div>
+</section>
+<div class="details-grid">
+<div class="detail-block">
+<h3>By Night</h3>
+<p>The best time to arrive is when you feel like you have nowhere else to be. This is usually between midnight and whenever you decide to leave.</p>
+<p>Bring: yourself. A reason helps, but it's not required. We've learned not to ask.</p>
+<span>Always Open</span>
+</div>
+<div class="detail-block">
+<h3>By Day</h3>
+<p>We don't officially open during the day. But if you find the door unlocked, come in. Someone is always here. That someone might be us, or it might be a regular who forgot to leave six hours ago.</p>
+<p>We don't turn people away.</p>
+<span>When You Need It</span>
+</div>
+</div>
+<section class="practical-section">
+<h3>Practical Matters</h3>
+<div class="info-item">
+<span class="info-label">Phone</span>
+<span class="info-value">We don't have a phone. We've tried having one. People were uncomfortable with the silence when nobody called.</span>
+</div>
+<div class="info-item">
+<span class="info-label">Email</span>
+<span class="info-value">We don't have email either. If you need to reach us, you already know where we are. That's how it works.</span>
+</div>
+<div class="info-item">
+<span class="info-label">Directions</span>
+<span class="info-value">We can't give you an address. The street signs keep changing their minds. But if you get lost, keep walking. The rain knows the way.</span>
+</div>
+<div class="info-item">
+<span class="info-label">Parking</span>
+<span class="info-value">Park wherever you want. Nobody's watching. Nobody's ever watching.</span>
+</div>
+<div class="info-item">
+<span class="info-label">Cash or Card</span>
+<span class="info-value">We accept both. We also accept the faded ticket stub from a concert you went to alone. We once accepted a poem. We framed it.</span>
+</div>
+</section>
+<section class="closing-section">
+<p>If you're reading this, you're already close. You just haven't walked far enough yet.</p>
+<p style="margin-top: 2rem;">Come find us when you're ready to sit still for a while.</p>
+</section>
+<footer>
+<span class="footer-logo">The 2AM Café</span>
+<span class="footer-note">no wifi. no loud music. no closing time.</span>
+</footer>
+</body>
+</html>
